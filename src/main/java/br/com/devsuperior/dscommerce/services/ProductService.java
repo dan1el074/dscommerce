@@ -1,8 +1,10 @@
 package br.com.devsuperior.dscommerce.services;
 
 import br.com.devsuperior.dscommerce.dto.ProductDto;
+import br.com.devsuperior.dscommerce.dto.ProductMinDto;
 import br.com.devsuperior.dscommerce.entitites.Product;
 import br.com.devsuperior.dscommerce.repositories.ProductRepository;
+import br.com.devsuperior.dscommerce.repositories.projections.ProductMinProjection;
 import br.com.devsuperior.dscommerce.services.exceptions.DatabaseException;
 import br.com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,6 +31,12 @@ public class ProductService {
     public ProductDto findById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         return new ProductDto(product);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductMinDto> searchByName(String nome, Pageable pageable) {
+        Page<ProductMinProjection> projections = productRepository.searchByName(nome, pageable);
+        return projections.map(ProductMinDto::new);
     }
 
     @Transactional
