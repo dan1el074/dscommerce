@@ -1,5 +1,6 @@
 package br.com.devsuperior.dscommerce.dto;
 
+import br.com.devsuperior.dscommerce.entitites.Product;
 import br.com.devsuperior.dscommerce.repositories.projections.ProductMinProjection;
 
 public class ProductMinDto {
@@ -22,6 +23,13 @@ public class ProductMinDto {
         this.name = projection.getName();
         this.price = projection.getPrice();
         this.imgUrl = projection.getImgUrl();
+    }
+
+    public ProductMinDto(Product product) {
+        id = product.getId();
+        name = product.getName();
+        price = product.getPrice();
+        imgUrl = product.getImgUrl();
     }
 
     public Long getId() {

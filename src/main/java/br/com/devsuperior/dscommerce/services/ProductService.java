@@ -22,9 +22,9 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Transactional(readOnly = true)
-    public Page<ProductDto> findAll(Pageable pageable) {
+    public Page<ProductMinDto> findAll(Pageable pageable) {
         Page<Product> products = productRepository.findAll(pageable);
-        return products.map(ProductDto::new);
+        return products.map(ProductMinDto::new);
     }
 
     @Transactional(readOnly = true)
