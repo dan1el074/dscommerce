@@ -84,4 +84,8 @@ public class Product {
     public List<Order> getOrders() {
         return items.stream().map(OrderItem::getOrder).toList();
     }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
 }
