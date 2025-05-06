@@ -1,7 +1,9 @@
 package br.com.devsuperior.dscommerce.services;
 
+import br.com.devsuperior.dscommerce.dto.CategoryDto;
 import br.com.devsuperior.dscommerce.dto.ProductDto;
 import br.com.devsuperior.dscommerce.dto.ProductMinDto;
+import br.com.devsuperior.dscommerce.entitites.Category;
 import br.com.devsuperior.dscommerce.entitites.Product;
 import br.com.devsuperior.dscommerce.repositories.ProductRepository;
 import br.com.devsuperior.dscommerce.repositories.projections.ProductMinProjection;
@@ -76,5 +78,12 @@ public class ProductService {
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
+
+        entity.getCategories().clear();
+        for (CategoryDto categoryDto : dto.getCategories()) {
+            Category category = new Category();
+            category.setId(categoryDto.getId());
+            entity.getCategories().add(category);
+        }
     }
 }
