@@ -66,4 +66,12 @@ public class Order {
     public List<Product> getProducts() {
         return items.stream().map(OrderItem::getProduct).toList();
     }
+
+    public User getClient() {
+        return client;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
 }
