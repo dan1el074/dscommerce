@@ -2,13 +2,17 @@ package br.com.devsuperior.dscommerce.services;
 
 import br.com.devsuperior.dscommerce.dto.OrderDto;
 import br.com.devsuperior.dscommerce.dto.OrderItemDto;
+import br.com.devsuperior.dscommerce.dto.errors.CustomError;
 import br.com.devsuperior.dscommerce.entitites.*;
 import br.com.devsuperior.dscommerce.repositories.OrderItemRepository;
 import br.com.devsuperior.dscommerce.repositories.OrderRepository;
 import br.com.devsuperior.dscommerce.repositories.ProductRepository;
+import br.com.devsuperior.dscommerce.services.exceptions.ForbiddenException;
 import br.com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +35,11 @@ public class OrderService {
     @Transactional(readOnly = true)
     public OrderDto findById(long id) {
         Order order = orderRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        User user = userService.authenticate();
+        if(!user.hasRole("ROLE_ADMIN") && !user.getId().equals(order.getClient().getId())) {
+            throw new ForbiddenException();
+        }
+
         return new OrderDto(order);
     }
 

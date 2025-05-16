@@ -4,6 +4,7 @@ import br.com.devsuperior.dscommerce.dto.errors.CustomError;
 import br.com.devsuperior.dscommerce.dto.errors.FieldMessage;
 import br.com.devsuperior.dscommerce.dto.errors.ValidError;
 import br.com.devsuperior.dscommerce.services.exceptions.DatabaseException;
+import br.com.devsuperior.dscommerce.services.exceptions.ForbiddenException;
 import br.com.devsuperior.dscommerce.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -44,5 +45,12 @@ public class ControllerExceptionHandler {
         }
 
         return ResponseEntity.status(status).body(customError);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomError> forbidden(ForbiddenException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomError error = new CustomError(Instant.now(),status.value(),e.getMessage(),request.getRequestURI());
+        return ResponseEntity.status(status).body(error);
     }
 }
