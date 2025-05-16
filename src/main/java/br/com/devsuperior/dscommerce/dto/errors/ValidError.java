@@ -16,6 +16,7 @@ public class ValidError extends CustomError{
     }
 
     public void addError(FieldMessage fieldMessage) {
+        errors.removeIf(error -> error.getField().equals(fieldMessage));
         errors.add(fieldMessage);
     }
 }
